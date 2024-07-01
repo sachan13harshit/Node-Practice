@@ -123,27 +123,55 @@
 
 // i want to serve another html when i hit the url localhost:5678/about
 
+// const http = require('http');
+// const server = http.createServer((req, res) => {
+//     if (req.url === '/') {
+//         res.setHeader('Content-Type', 'text/html');
+//         res.write('<html><head><title> node js class </title> </head> <body>');
+//         res.write('<h1> Hello world </h1>');
+//         res.write('</body></html>');
+//         res.end();
+//     } else if (req.url === '/login') {
+//         res.setHeader('Content-Type', 'text/html');
+//         res.write('<html><head><title> node js class </title> </head> <body>');
+//         res.write('<h1> Hello login </h1>');
+//         res.write('</body></html>');
+//         res.end();
+//     } 
+// });
+// const port = 5678;
+// const host = 'localhost';
+// server.listen(port, host, () => {
+//     console.log(`Server is running on http://${host}:${port}`);
+// });
+
+
+// now i have to serve the html file
+
 const http = require('http');
+const fs = require('fs');
 const server = http.createServer((req, res) => {
     if (req.url === '/') {
-        res.setHeader('Content-Type', 'text/html');
-        res.write('<html><head><title> node js class </title> </head> <body>');
-        res.write('<h1> Hello world </h1>');
-        res.write('</body></html>');
-        res.end();
-    } else if (req.url === '/login') {
-        res.setHeader('Content-Type', 'text/html');
-        res.write('<html><head><title> node js class </title> </head> <body>');
-        res.write('<h1> Hello login </h1>');
-        res.write('</body></html>');
-        res.end();
-    } 
-});
+        fs.readFile('index.html', (err, data) => {
+            if (err) {
+                res.end('Error reading the file');
+                return;
+            }
+            res.setHeader('Content-Type', 'text/html');
+            res.write(data);
+            res.end();
+        });
+    }
+}
+);
+
 const port = 5678;
 const host = 'localhost';
 server.listen(port, host, () => {
     console.log(`Server is running on http://${host}:${port}`);
-});
+}
+);
+
 
 
 
